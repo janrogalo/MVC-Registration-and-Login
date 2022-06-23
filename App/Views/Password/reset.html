@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block footer %}
+<script src="/js/app.js"></script>
+<script>
+
+    $(document).ready(function() {
+
+        $('#formPassword').validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 8,
+                    validPassword: true
+                },
+                password_confirm: {
+                    equalTo: '#inputPassword'
+                }
+            },
+            messages:{
+
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+
+<h1>Reset Password</h1>
+
+{% if user.errors is not empty %}
+<p> Errors: </p>
+<ul>
+    {% for error in user.errors %}
+    <li>{{error}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form method="post" action="/password/reset-password" id="formPassword">
+    <input type="hidden" name="token" value="{{ token }}" />
+
+    <div>
+        <label for="inputPassword">Password</label>
+        <input id="inputPassword" name="password" type="password" placeholder="Password" required/>
+    </div>
+    <div>
+        <label for="inputPasswordConfirm">Repeat password</label>
+        <input id="inputPasswordConfirm" name="password_confirm" type="password" placeholder="Repeat password" required/>
+    </div>
+
+    <button type="submit">Reset password</button>
+
+
+</form>
+
+{% endblock %}
